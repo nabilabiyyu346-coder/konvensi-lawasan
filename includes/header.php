@@ -15,7 +15,7 @@ $jumlahKeranjang = jumlahKeranjang($pdo);
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= htmlspecialchars($pageTitle ?? 'Batik Nusantara') ?> — Batik Nusantara</title>
+<title><?= htmlspecialchars($pageTitle ?? 'Konvensi Lawasan') ?> — Konvensi Lawasan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
@@ -24,7 +24,7 @@ $jumlahKeranjang = jumlahKeranjang($pdo);
 <body>
 
 <nav class="nav" x-data="{ open: false }">
-  <a href="index.php" class="nav__brand">Batik<span>.</span>Nusantara</a>
+  <a href="index.php" class="nav__brand">Konvensi<span>.</span>Lawasan</a>
   <button class="nav__toggle" @click="open = !open" aria-label="Buka menu">
     <span></span><span></span><span></span>
   </button>
