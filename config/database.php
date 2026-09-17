@@ -7,10 +7,10 @@
  * dari default XAMPP (root, tanpa password).
  */
 
-define('DB_HOST', 'localhost');
+define('DB_HOST', 'sql211.infinityfree.com');
 define('DB_NAME', 'if0_42851281_batik');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_USER', 'if0_42851281');
+define('DB_PASS', 'ramadh4n17');
 
 try {
     $pdo = new PDO(

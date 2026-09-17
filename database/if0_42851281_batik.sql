@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.3
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Sep 17, 2026 at 06:23 AM
--- Server version: 8.4.3
--- PHP Version: 8.4.13
+-- Host: sql211.infinityfree.com
+-- Generation Time: Sep 17, 2026 at 03:04 AM
+-- Server version: 11.4.13-MariaDB
+-- PHP Version: 7.2.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `batik`
+-- Database: `if0_42851281_batik`
 --
 
 -- --------------------------------------------------------
@@ -28,10 +29,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `dibuat_pada` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `dibuat_pada` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -48,7 +49,7 @@ INSERT INTO `admin` (`id`, `username`, `password`, `dibuat_pada`) VALUES
 --
 
 CREATE TABLE `kategori` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `slug` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -69,13 +70,13 @@ INSERT INTO `kategori` (`id`, `nama`, `slug`) VALUES
 --
 
 CREATE TABLE `pelanggan` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nama` varchar(120) NOT NULL,
   `email` varchar(150) NOT NULL,
   `password` varchar(255) NOT NULL,
   `telepon` varchar(30) DEFAULT NULL,
-  `alamat` text,
-  `dibuat_pada` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `alamat` text DEFAULT NULL,
+  `dibuat_pada` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -92,19 +93,19 @@ INSERT INTO `pelanggan` (`id`, `nama`, `email`, `password`, `telepon`, `alamat`,
 --
 
 CREATE TABLE `pesanan` (
-  `id` int NOT NULL,
-  `pelanggan_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `pelanggan_id` int(11) DEFAULT NULL,
   `nama_pemesan` varchar(120) NOT NULL,
   `email` varchar(150) NOT NULL,
   `telepon` varchar(30) NOT NULL,
   `alamat` text NOT NULL,
-  `catatan` text,
-  `total` decimal(12,2) NOT NULL DEFAULT '0.00',
+  `catatan` text DEFAULT NULL,
+  `total` decimal(12,2) NOT NULL DEFAULT 0.00,
   `status` enum('baru','diproses','selesai') DEFAULT 'baru',
   `metode_pembayaran` enum('transfer_bank','cod') NOT NULL DEFAULT 'transfer_bank',
   `status_pembayaran` enum('menunggu','menunggu_verifikasi','lunas','ditolak') NOT NULL DEFAULT 'menunggu',
   `bukti_bayar` varchar(255) DEFAULT NULL,
-  `dibuat_pada` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `dibuat_pada` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -112,10 +113,10 @@ CREATE TABLE `pesanan` (
 --
 
 INSERT INTO `pesanan` (`id`, `pelanggan_id`, `nama_pemesan`, `email`, `telepon`, `alamat`, `catatan`, `total`, `status`, `metode_pembayaran`, `status_pembayaran`, `bukti_bayar`, `dibuat_pada`) VALUES
-(1, 1, 'Purnomo', 'nomo12@mail.com', '087652348777', 'JL. DR CIPTO NO 32', '', 585000.00, 'baru', 'transfer_bank', 'lunas', 'pesanan-1-1789545265.jpg', '2026-09-16 07:53:59'),
-(2, 1, 'Purnomo', 'nomo12@mail.com', '087652348777', 'JL. DR CIPTO NO 76', '', 660000.00, 'baru', 'transfer_bank', 'menunggu', NULL, '2026-09-16 10:33:04'),
-(3, 1, 'Purnomo', 'nomo12@mail.com', '087652348777', 'JL. DR CIPTO NO 76', '', 1040000.00, 'baru', 'transfer_bank', 'menunggu_verifikasi', 'pesanan-3-1789554881.jpg', '2026-09-16 10:34:26'),
-(4, 1, 'Purnomo', 'nomo12@mail.com', '087652348777', 'JL. DR CIPTO NO 76', '', 330000.00, 'baru', 'transfer_bank', 'lunas', 'pesanan-4-1789562178.png', '2026-09-16 12:35:43');
+(1, 1, 'Purnomo', 'nomo12@mail.com', '087652348777', 'JL. DR CIPTO NO 32', '', '585000.00', 'baru', 'transfer_bank', 'lunas', 'pesanan-1-1789545265.jpg', '2026-09-16 07:53:59'),
+(2, 1, 'Purnomo', 'nomo12@mail.com', '087652348777', 'JL. DR CIPTO NO 76', '', '660000.00', 'baru', 'transfer_bank', 'menunggu', NULL, '2026-09-16 10:33:04'),
+(3, 1, 'Purnomo', 'nomo12@mail.com', '087652348777', 'JL. DR CIPTO NO 76', '', '1040000.00', 'baru', 'transfer_bank', 'menunggu_verifikasi', 'pesanan-3-1789554881.jpg', '2026-09-16 10:34:26'),
+(4, 1, 'Purnomo', 'nomo12@mail.com', '087652348777', 'JL. DR CIPTO NO 76', '', '330000.00', 'baru', 'transfer_bank', 'lunas', 'pesanan-4-1789562178.png', '2026-09-16 12:35:43');
 
 -- --------------------------------------------------------
 
@@ -124,12 +125,12 @@ INSERT INTO `pesanan` (`id`, `pelanggan_id`, `nama_pemesan`, `email`, `telepon`,
 --
 
 CREATE TABLE `pesanan_item` (
-  `id` int NOT NULL,
-  `pesanan_id` int NOT NULL,
-  `produk_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `pesanan_id` int(11) NOT NULL,
+  `produk_id` int(11) DEFAULT NULL,
   `nama_produk` varchar(120) NOT NULL,
   `harga_satuan` decimal(12,2) NOT NULL,
-  `jumlah` int NOT NULL,
+  `jumlah` int(11) NOT NULL,
   `subtotal` decimal(12,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -138,13 +139,13 @@ CREATE TABLE `pesanan_item` (
 --
 
 INSERT INTO `pesanan_item` (`id`, `pesanan_id`, `produk_id`, `nama_produk`, `harga_satuan`, `jumlah`, `subtotal`) VALUES
-(1, 1, 2, 'Kain Batik Cap Kawung', 275000.00, 1, 275000.00),
-(2, 1, 4, 'Kain Batik Mega Mendung', 310000.00, 1, 310000.00),
-(3, 2, 2, 'Kain Batik Cap Kawung', 275000.00, 1, 275000.00),
-(4, 2, 6, 'Dress Batik Sekar Jagad', 385000.00, 1, 385000.00),
-(5, 3, 3, 'Kain Batik Tulis Parang', 520000.00, 2, 1040000.00),
-(6, 4, 5, 'Kemeja Batik Lengan Panjang Truntum', 235000.00, 1, 235000.00),
-(7, 4, 10, 'Totebag Batik Kawung', 95000.00, 1, 95000.00);
+(1, 1, 2, 'Kain Batik Cap Kawung', '275000.00', 1, '275000.00'),
+(2, 1, 4, 'Kain Batik Mega Mendung', '310000.00', 1, '310000.00'),
+(3, 2, 2, 'Kain Batik Cap Kawung', '275000.00', 1, '275000.00'),
+(4, 2, 6, 'Dress Batik Sekar Jagad', '385000.00', 1, '385000.00'),
+(5, 3, 3, 'Kain Batik Tulis Parang', '520000.00', 2, '1040000.00'),
+(6, 4, 5, 'Kemeja Batik Lengan Panjang Truntum', '235000.00', 1, '235000.00'),
+(7, 4, 10, 'Totebag Batik Kawung', '95000.00', 1, '95000.00');
 
 -- --------------------------------------------------------
 
@@ -153,15 +154,15 @@ INSERT INTO `pesanan_item` (`id`, `pesanan_id`, `produk_id`, `nama_produk`, `har
 --
 
 CREATE TABLE `produk` (
-  `id` int NOT NULL,
-  `kategori_id` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `kategori_id` int(11) NOT NULL,
   `nama` varchar(120) NOT NULL,
   `motif` varchar(80) NOT NULL,
   `harga` decimal(12,2) NOT NULL,
-  `stok` int NOT NULL DEFAULT '0',
-  `deskripsi` text,
+  `stok` int(11) NOT NULL DEFAULT 0,
+  `deskripsi` text DEFAULT NULL,
   `gambar` varchar(255) DEFAULT NULL,
-  `dibuat_pada` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `dibuat_pada` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -169,17 +170,17 @@ CREATE TABLE `produk` (
 --
 
 INSERT INTO `produk` (`id`, `kategori_id`, `nama`, `motif`, `harga`, `stok`, `deskripsi`, `gambar`, `dibuat_pada`) VALUES
-(1, 1, 'Kain Batik Tulis Sogan', 'Sogan', 450000.00, 12, 'Kain batik tulis dengan pewarna alami soga, warna cokelat khas keraton, cocok untuk acara formal.', 'sogan.jpg', '2026-09-16 07:41:13'),
-(2, 1, 'Kain Batik Cap Kawung', 'Kawung', 275000.00, 18, 'Kain batik cap motif kawung klasik, bahan katun primis yang adem dipakai harian.', 'kawung.jpg', '2026-09-16 07:41:13'),
-(3, 1, 'Kain Batik Tulis Parang', 'Parang', 520000.00, 6, 'Motif parang tulis tangan, melambangkan kesinambungan dan kekuatan, bahan katun halus.', 'parang.jpg', '2026-09-16 07:41:13'),
-(4, 1, 'Kain Batik Mega Mendung', 'Mega Mendung', 310000.00, 14, 'Motif awan khas Cirebon dengan gradasi warna biru yang lembut.', 'mega-mendung.jpg', '2026-09-16 07:41:13'),
-(5, 2, 'Kemeja Batik Lengan Panjang Truntum', 'Truntum', 235000.00, 24, 'Kemeja batik pria lengan panjang, motif truntum, cocok untuk kerja maupun acara resmi.', 'truntum.jpg', '2026-09-16 07:41:13'),
-(6, 2, 'Dress Batik Sekar Jagad', 'Sekar Jagad', 385000.00, 9, 'Dress wanita motif sekar jagad, potongan modern dengan sentuhan tradisional.', 'sekar-jagad.jpg', '2026-09-16 07:41:13'),
-(7, 2, 'Kemeja Batik Lengan Pendek Lasem', 'Lasem', 195000.00, 30, 'Kemeja santai lengan pendek motif Lasem dengan warna-warna cerah khas pesisir.', 'lasem.jpg', '2026-09-16 07:41:13'),
-(8, 2, 'Blouse Batik Sido Mukti', 'Sido Mukti', 265000.00, 18, 'Blouse wanita motif Sido Mukti, melambangkan harapan hidup sejahtera.', 'sido-mukti.jpg', '2026-09-16 07:41:13'),
-(9, 3, 'Selendang Batik Prada', 'Prada', 180000.00, 14, 'Selendang dengan aksen prada (emas), cocok untuk pelengkap busana pesta.', 'prada.jpg', '2026-09-16 07:41:13'),
-(10, 3, 'Totebag Batik Kawung', 'Kawung', 95000.00, 40, 'Totebag kanvas dengan cetakan motif kawung, ringan dan tahan lama untuk sehari-hari.', 'kawung.jpg', '2026-09-16 07:41:13'),
-(11, 3, 'Masker Batik Truntum (isi 3)', 'Truntum', 45000.00, 60, 'Masker kain dua lapis motif truntum, nyaman dipakai untuk aktivitas luar ruangan.', 'truntum.jpg', '2026-09-16 07:41:13');
+(1, 1, 'Kain Batik Tulis Sogan', 'Sogan', '450000.00', 12, 'Kain batik tulis dengan pewarna alami soga, warna cokelat khas keraton, cocok untuk acara formal.', 'sogan.jpg', '2026-09-16 07:41:13'),
+(2, 1, 'Kain Batik Cap Kawung', 'Kawung', '275000.00', 18, 'Kain batik cap motif kawung klasik, bahan katun primis yang adem dipakai harian.', 'kawung.jpg', '2026-09-16 07:41:13'),
+(3, 1, 'Kain Batik Tulis Parang', 'Parang', '520000.00', 6, 'Motif parang tulis tangan, melambangkan kesinambungan dan kekuatan, bahan katun halus.', 'parang.jpg', '2026-09-16 07:41:13'),
+(4, 1, 'Kain Batik Mega Mendung', 'Mega Mendung', '310000.00', 14, 'Motif awan khas Cirebon dengan gradasi warna biru yang lembut.', 'mega-mendung.jpg', '2026-09-16 07:41:13'),
+(5, 2, 'Kemeja Batik Lengan Panjang Truntum', 'Truntum', '235000.00', 24, 'Kemeja batik pria lengan panjang, motif truntum, cocok untuk kerja maupun acara resmi.', 'truntum.jpg', '2026-09-16 07:41:13'),
+(6, 2, 'Dress Batik Sekar Jagad', 'Sekar Jagad', '385000.00', 9, 'Dress wanita motif sekar jagad, potongan modern dengan sentuhan tradisional.', 'sekar-jagad.jpg', '2026-09-16 07:41:13'),
+(7, 2, 'Kemeja Batik Lengan Pendek Lasem', 'Lasem', '195000.00', 30, 'Kemeja santai lengan pendek motif Lasem dengan warna-warna cerah khas pesisir.', 'lasem.jpg', '2026-09-16 07:41:13'),
+(8, 2, 'Blouse Batik Sido Mukti', 'Sido Mukti', '265000.00', 18, 'Blouse wanita motif Sido Mukti, melambangkan harapan hidup sejahtera.', 'sido-mukti.jpg', '2026-09-16 07:41:13'),
+(9, 3, 'Selendang Batik Prada', 'Prada', '180000.00', 14, 'Selendang dengan aksen prada (emas), cocok untuk pelengkap busana pesta.', 'prada.jpg', '2026-09-16 07:41:13'),
+(10, 3, 'Totebag Batik Kawung', 'Kawung', '95000.00', 40, 'Totebag kanvas dengan cetakan motif kawung, ringan dan tahan lama untuk sehari-hari.', 'kawung.jpg', '2026-09-16 07:41:13'),
+(11, 3, 'Masker Batik Truntum (isi 3)', 'Truntum', '45000.00', 60, 'Masker kain dua lapis motif truntum, nyaman dipakai untuk aktivitas luar ruangan.', 'truntum.jpg', '2026-09-16 07:41:13');
 
 --
 -- Indexes for dumped tables
@@ -236,37 +237,37 @@ ALTER TABLE `produk`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pelanggan`
 --
 ALTER TABLE `pelanggan`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `pesanan_item`
 --
 ALTER TABLE `pesanan_item`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
