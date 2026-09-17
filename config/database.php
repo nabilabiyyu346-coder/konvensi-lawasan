@@ -8,7 +8,7 @@
  */
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'batik');
+define('DB_NAME', 'if0_42851281_batik');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 
@@ -23,5 +23,5 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    die('Koneksi basis data gagal. Pastikan MySQL aktif dan database "batik" sudah diimport dari database/schema.sql. Detail: ' . $e->getMessage());
+    die('Koneksi basis data gagal. Pastikan MySQL aktif dan database "if0_42851281_batik" sudah diimport dari database/schema.sql. Detail: ' . $e->getMessage());
 }
