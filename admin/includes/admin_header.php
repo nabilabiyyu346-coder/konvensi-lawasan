@@ -6,7 +6,7 @@ $current = basename($_SERVER['PHP_SELF']);
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= htmlspecialchars($pageTitle ?? 'Admin') ?> — Admin Konvensi Lawasan</title>
+<title><?= htmlspecialchars($pageTitle ?? 'Admin') ?> — Admin Batik Nusantara</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/style.css">
@@ -15,7 +15,7 @@ $current = basename($_SERVER['PHP_SELF']);
 <body class="admin-body">
 
 <nav class="admin-nav">
-  <a href="index.php" class="nav__brand">Lawasan<span>.</span>Admin</a>
+  <a href="index.php" class="nav__brand">Batik<span>.</span>Admin</a>
   <ul class="admin-nav__links">
     <li><a href="index.php" class="<?= $current === 'index.php' ? 'is-active' : '' ?>">Dashboard</a></li>
     <li><a href="produk.php" class="<?= in_array($current, ['produk.php','produk_form.php']) ? 'is-active' : '' ?>">Produk</a></li>

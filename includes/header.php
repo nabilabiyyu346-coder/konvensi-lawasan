@@ -15,19 +15,20 @@ $jumlahKeranjang = jumlahKeranjang($pdo);
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= htmlspecialchars($pageTitle ?? 'Konvensi Lawasan') ?> — Konvensi Lawasan</title>
+<title><?= htmlspecialchars($pageTitle ?? 'Batik Nusantara') ?> — Batik Nusantara</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
 </head>
 <body>
 
-<nav class="nav">
-  <a href="index.php" class="nav__brand">Konvensi<span>.</span>Lawasan</a>
-  <button class="nav__toggle" id="navToggle" aria-label="Buka menu">
+<nav class="nav" x-data="{ open: false }">
+  <a href="index.php" class="nav__brand">Batik<span>.</span>Nusantara</a>
+  <button class="nav__toggle" @click="open = !open" aria-label="Buka menu">
     <span></span><span></span><span></span>
   </button>
-  <ul class="nav__links" id="navLinks">
+  <ul class="nav__links" :class="{ 'is-open': open }" @click="open = false">
     <li><a href="index.php"   class="<?= $current === 'index.php' ? 'is-active' : '' ?>">Beranda</a></li>
     <li><a href="katalog.php" class="<?= $current === 'katalog.php' ? 'is-active' : '' ?>">Katalog</a></li>
     <li><a href="tentang.php" class="<?= $current === 'tentang.php' ? 'is-active' : '' ?>">Tentang</a></li>

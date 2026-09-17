@@ -1,14 +1,7 @@
-const navToggle = document.getElementById('navToggle');
-const navLinks = document.getElementById('navLinks');
-
-if (navToggle && navLinks) {
-  navToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('is-open');
-  });
-  navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => navLinks.classList.remove('is-open'));
-  });
-}
+// ============================================================
+// Mobile nav toggle sekarang ditangani Alpine.js lewat
+// x-data/@click di includes/header.php.
+// ============================================================
 
 // ============================================================
 // Kartu kain batik interaktif di hero (beranda)
