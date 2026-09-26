@@ -2,15 +2,25 @@
 require_once 'includes/auth.php';
 require_once '../config/database.php';
 
-$mulai   = $_GET['mulai']   ?? date('Y-m-01');
-$selesai = $_GET['selesai'] ?? date('Y-m-d');
+$mulai      = $_GET['mulai']       ?? date('Y-m-01');
+$selesai    = $_GET['selesai']     ?? date('Y-m-d');
+$kategoriId = $_GET['kategori_id'] ?? '';
 
-$stmt = $pdo->prepare("
-    SELECT * FROM pesanan
-    WHERE DATE(dibuat_pada) BETWEEN :mulai AND :selesai
-    ORDER BY dibuat_pada ASC
-");
-$stmt->execute([':mulai' => $mulai, ':selesai' => $selesai]);
+$sql = "
+    SELECT DISTINCT p.* FROM pesanan p
+    JOIN pesanan_item pi ON pi.pesanan_id = p.id
+    LEFT JOIN produk pr ON pr.id = pi.produk_id
+    WHERE DATE(p.dibuat_pada) BETWEEN :mulai AND :selesai
+";
+$params = [':mulai' => $mulai, ':selesai' => $selesai];
+if ($kategoriId !== '') {
+    $sql .= " AND pr.kategori_id = :kategori_id";
+    $params[':kategori_id'] = $kategoriId;
+}
+$sql .= " ORDER BY p.dibuat_pada ASC";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
 $pesananList = $stmt->fetchAll();
 
 $filename = 'laporan-penjualan_' . $mulai . '_sampai_' . $selesai . '.csv';

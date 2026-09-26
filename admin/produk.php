@@ -42,17 +42,19 @@ require_once 'includes/admin_header.php';
       <tbody>
         <?php foreach ($produkList as $p): ?>
           <tr>
-            <td><img src="<?= gambarProduk($p['gambar']) ?>" alt="" class="admin-table__thumb"></td>
+            <td><img src="<?= gambarProduk($p['gambar'], '../') ?>" alt="" class="admin-table__thumb"></td>
             <td><?= htmlspecialchars($p['nama']) ?></td>
             <td><?= htmlspecialchars($p['kategori_nama']) ?></td>
             <td><?= rupiah($p['harga']) ?></td>
             <td><?= (int) $p['stok'] ?></td>
-            <td class="admin-table__actions">
-              <a href="produk_form.php?id=<?= $p['id'] ?>">Edit</a>
-              <form method="post" action="produk_hapus.php" onsubmit="return confirm('Hapus produk ini? Tindakan tidak bisa dibatalkan.');">
-                <input type="hidden" name="id" value="<?= $p['id'] ?>">
-                <button type="submit" class="link-remove">Hapus</button>
-              </form>
+            <td>
+              <div class="admin-table__actions">
+                <a href="produk_form.php?id=<?= $p['id'] ?>">Edit</a>
+                <form method="post" action="produk_hapus.php" onsubmit="return confirm('Hapus produk ini? Tindakan tidak bisa dibatalkan.');">
+                  <input type="hidden" name="id" value="<?= $p['id'] ?>">
+                  <button type="submit" class="link-remove">Hapus</button>
+                </form>
+              </div>
             </td>
           </tr>
         <?php endforeach; ?>

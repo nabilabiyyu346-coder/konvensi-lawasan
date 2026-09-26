@@ -43,12 +43,14 @@ require_once 'includes/admin_header.php';
             <td><?= htmlspecialchars($k['nama']) ?></td>
             <td><code><?= htmlspecialchars($k['slug']) ?></code></td>
             <td><?= (int) $k['jumlah_produk'] ?></td>
-            <td class="admin-table__actions">
-              <a href="kategori_form.php?id=<?= $k['id'] ?>">Edit</a>
-              <form method="post" action="kategori_hapus.php" onsubmit="return confirm('Hapus kategori ini?');">
-                <input type="hidden" name="id" value="<?= $k['id'] ?>">
-                <button type="submit" class="link-remove">Hapus</button>
-              </form>
+            <td>
+              <div class="admin-table__actions">
+                <a href="kategori_form.php?id=<?= $k['id'] ?>">Edit</a>
+                <form method="post" action="kategori_hapus.php" onsubmit="return confirm('Hapus kategori ini?');">
+                  <input type="hidden" name="id" value="<?= $k['id'] ?>">
+                  <button type="submit" class="link-remove">Hapus</button>
+                </form>
+              </div>
             </td>
           </tr>
         <?php endforeach; ?>

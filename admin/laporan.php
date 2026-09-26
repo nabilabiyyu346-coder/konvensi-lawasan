@@ -5,39 +5,78 @@ require_once '../includes/helpers.php';
 
 $pageTitle = 'Laporan Penjualan';
 
-$mulai   = $_GET['mulai']   ?? date('Y-m-01'); // awal bulan ini
-$selesai = $_GET['selesai'] ?? date('Y-m-d');  // hari ini
+$mulai      = $_GET['mulai']       ?? date('Y-m-01'); // awal bulan ini
+$selesai    = $_GET['selesai']     ?? date('Y-m-d');  // hari ini
+$kategoriId = $_GET['kategori_id'] ?? '';
 
-$stmt = $pdo->prepare("
-    SELECT * FROM pesanan
-    WHERE DATE(dibuat_pada) BETWEEN :mulai AND :selesai
-    ORDER BY dibuat_pada DESC
-");
-$stmt->execute([':mulai' => $mulai, ':selesai' => $selesai]);
+$kategoriList = $pdo->query("SELECT * FROM kategori ORDER BY nama")->fetchAll();
+
+// --- Daftar transaksi pada periode (+ kategori jika dipilih) ---
+$sql = "
+    SELECT DISTINCT p.*
+    FROM pesanan p
+    JOIN pesanan_item pi ON pi.pesanan_id = p.id
+    LEFT JOIN produk pr ON pr.id = pi.produk_id
+    WHERE DATE(p.dibuat_pada) BETWEEN :mulai AND :selesai
+";
+$params = [':mulai' => $mulai, ':selesai' => $selesai];
+if ($kategoriId !== '') {
+    $sql .= " AND pr.kategori_id = :kategori_id";
+    $params[':kategori_id'] = $kategoriId;
+}
+$sql .= " ORDER BY p.dibuat_pada DESC";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
 $pesananList = $stmt->fetchAll();
 
 $totalPeriode = array_sum(array_column($pesananList, 'total'));
 $jumlahTransaksi = count($pesananList);
 
-$stmtTerlaris = $pdo->prepare("
+// --- Produk terlaris pada periode (+ kategori jika dipilih) ---
+$sqlTerlaris = "
     SELECT pi.nama_produk, SUM(pi.jumlah) AS total_terjual, SUM(pi.subtotal) AS total_omzet
     FROM pesanan_item pi
     JOIN pesanan p ON p.id = pi.pesanan_id
+    LEFT JOIN produk pr ON pr.id = pi.produk_id
     WHERE DATE(p.dibuat_pada) BETWEEN :mulai AND :selesai
-    GROUP BY pi.nama_produk
-    ORDER BY total_terjual DESC
-    LIMIT 5
-");
-$stmtTerlaris->execute([':mulai' => $mulai, ':selesai' => $selesai]);
+";
+$paramsTerlaris = [':mulai' => $mulai, ':selesai' => $selesai];
+if ($kategoriId !== '') {
+    $sqlTerlaris .= " AND pr.kategori_id = :kategori_id";
+    $paramsTerlaris[':kategori_id'] = $kategoriId;
+}
+$sqlTerlaris .= " GROUP BY pi.nama_produk ORDER BY total_terjual DESC LIMIT 5";
+
+$stmtTerlaris = $pdo->prepare($sqlTerlaris);
+$stmtTerlaris->execute($paramsTerlaris);
 $produkTerlaris = $stmtTerlaris->fetchAll();
+
+$kategoriNamaTerpilih = '';
+foreach ($kategoriList as $k) {
+    if ((string) $k['id'] === (string) $kategoriId) {
+        $kategoriNamaTerpilih = $k['nama'];
+    }
+}
 
 require_once 'includes/admin_header.php';
 ?>
 
 <main class="admin-main">
-  <h1>Laporan Penjualan</h1>
+  <div class="admin-main__head no-print">
+    <h1>Laporan Penjualan</h1>
+    <button onclick="window.print()" class="btn btn--ghost">Cetak Laporan</button>
+  </div>
 
-  <form class="report-filter" method="get">
+  <!-- Kop laporan, cuma tampil saat dicetak -->
+  <div class="print-only print-header" style="margin-bottom:1.5rem;">
+    <h1>Batik Lawasan</h1>
+    <p>Laporan Penjualan · <?= date('d M Y', strtotime($mulai)) ?> – <?= date('d M Y', strtotime($selesai)) ?>
+      <?= $kategoriNamaTerpilih ? '· Kategori: ' . htmlspecialchars($kategoriNamaTerpilih) : '' ?>
+    </p>
+  </div>
+
+  <form class="report-filter no-print" method="get">
     <div>
       <label for="mulai">Dari tanggal</label>
       <input type="date" id="mulai" name="mulai" value="<?= htmlspecialchars($mulai) ?>">
@@ -46,8 +85,19 @@ require_once 'includes/admin_header.php';
       <label for="selesai">Sampai tanggal</label>
       <input type="date" id="selesai" name="selesai" value="<?= htmlspecialchars($selesai) ?>">
     </div>
+    <div>
+      <label for="kategori_id">Kategori</label>
+      <select id="kategori_id" name="kategori_id">
+        <option value="">Semua kategori</option>
+        <?php foreach ($kategoriList as $k): ?>
+          <option value="<?= $k['id'] ?>" <?= (string)$kategoriId === (string)$k['id'] ? 'selected' : '' ?>>
+            <?= htmlspecialchars($k['nama']) ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+    </div>
     <button type="submit" class="btn btn--solid">Tampilkan</button>
-    <a href="laporan_export.php?mulai=<?= urlencode($mulai) ?>&selesai=<?= urlencode($selesai) ?>" class="btn btn--ghost">Export CSV</a>
+    <a href="laporan_export.php?mulai=<?= urlencode($mulai) ?>&selesai=<?= urlencode($selesai) ?>&kategori_id=<?= urlencode($kategoriId) ?>" class="btn btn--ghost">Export CSV</a>
   </form>
 
   <div class="stat-grid stat-grid--report">
@@ -86,7 +136,7 @@ require_once 'includes/admin_header.php';
     </section>
 
     <section class="dashboard-panel">
-      <div class="dashboard-panel__head"><h2>Produk Terlaris</h2></div>
+      <div class="dashboard-panel__head"><h2>Produk Terlaris<?= $kategoriNamaTerpilih ? ' — ' . htmlspecialchars($kategoriNamaTerpilih) : '' ?></h2></div>
       <?php if (empty($produkTerlaris)): ?>
         <p class="empty-state">Belum ada data penjualan pada periode ini.</p>
       <?php else: ?>

@@ -68,9 +68,9 @@ require_once 'includes/admin_header.php';
       </div>
     </div>
 
-    <label for="gambar">Nama file gambar</label>
-    <input type="text" id="gambar" name="gambar" placeholder="contoh: kawung.jpg" value="<?= htmlspecialchars($produk['gambar']) ?>">
-    <p class="admin-form__hint">File harus sudah ada di folder <code>assets/images/produk/</code>. Kosongkan untuk pakai gambar default.</p>
+    <label for="gambar">Gambar (nama file atau tautan online)</label>
+    <input type="text" id="gambar" name="gambar" placeholder="kawung.jpg atau https://contoh.com/kawung.jpg" value="<?= htmlspecialchars($produk['gambar']) ?>">
+    <p class="admin-form__hint">Isi nama file yang ada di folder <code>assets/images/produk/</code>, atau tempel tautan gambar online (harus diawali <code>https://</code>). Kosongkan untuk pakai gambar default.</p>
 
     <label for="deskripsi">Deskripsi</label>
     <textarea id="deskripsi" name="deskripsi" rows="4" required><?= htmlspecialchars($produk['deskripsi']) ?></textarea>

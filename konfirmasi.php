@@ -55,7 +55,8 @@ require_once 'includes/header.php';
     <?php elseif ($pesanan['status_pembayaran'] === 'lunas'): ?>
       <div class="payment-panel payment-panel--success">
         <p class="payment-panel__status badge-status badge-status--selesai">Pembayaran lunas</p>
-        <p>Pembayaranmu sudah kami verifikasi. Pesanan akan segera diproses.</p>
+        <p>Pembayaranmu sudah kami verifikasi. Invoice sudah bisa diunduh, dan pesanan akan segera diproses.</p>
+        <a href="invoice.php?id=<?= (int) $pesanan['id'] ?>" class="btn btn--solid" style="margin-top:.8rem;">Lihat &amp; Cetak Invoice</a>
       </div>
 
     <?php elseif ($pesanan['status_pembayaran'] === 'menunggu_verifikasi'): ?>

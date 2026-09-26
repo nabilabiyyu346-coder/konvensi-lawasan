@@ -14,6 +14,12 @@ $motif       = trim($_POST['motif'] ?? '');
 $harga       = (float) ($_POST['harga'] ?? 0);
 $stok        = (int) ($_POST['stok'] ?? 0);
 $gambar      = trim($_POST['gambar'] ?? '') ?: null;
+// Kalau berupa tautan, harus http(s) yang valid dan muat di kolom (255 karakter)
+if ($gambar !== null && preg_match('#^[a-z][a-z0-9+.-]*://#i', $gambar)) {
+    if (!filter_var($gambar, FILTER_VALIDATE_URL) || !preg_match('#^https?://#i', $gambar) || strlen($gambar) > 255) {
+        $gambar = null;
+    }
+}
 $deskripsi   = trim($_POST['deskripsi'] ?? '');
 
 $errors = [];

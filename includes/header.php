@@ -43,6 +43,8 @@ $jumlahKeranjang = jumlahKeranjang($pdo);
     </li>
     <li>
       <?php if (pelangganLoggedIn()): ?>
+        <a href="pesanan_saya.php" class="<?= $current === 'pesanan_saya.php' ? 'is-active' : '' ?>">Pesanan Saya</a>
+        &nbsp;·&nbsp;
         <a href="logout.php" class="nav__account">Halo, <?= htmlspecialchars(explode(' ', pelangganNama())[0]) ?> · Logout</a>
       <?php else: ?>
         <a href="login.php" class="nav__account">Login</a>

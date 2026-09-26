@@ -8,9 +8,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-wajibLoginPelanggan('index.php');
-
 $pesananId = (int) ($_POST['pesanan_id'] ?? 0);
+
+// Kalau sesi sudah habis di tengah jalan, jangan lempar ke beranda —
+// balikkan lagi ke halaman pesanan ini setelah login supaya customer
+// bisa lanjut unggah bukti tanpa kehilangan jejak pesanannya.
+$kembaliKe = $pesananId > 0 ? 'konfirmasi.php?id=' . $pesananId : 'index.php';
+wajibLoginPelanggan($kembaliKe);
 
 $stmt = $pdo->prepare("SELECT * FROM pesanan WHERE id = :id");
 $stmt->execute([':id' => $pesananId]);

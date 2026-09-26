@@ -62,27 +62,30 @@ require_once 'includes/admin_header.php';
             </td>
             <td><span class="badge-status badge-status--<?= htmlspecialchars($p['status_pembayaran']) ?>"><?= str_replace('_', ' ', $p['status_pembayaran']) ?></span></td>
             <td><?= date('d M Y H:i', strtotime($p['dibuat_pada'])) ?></td>
-            <td class="admin-table__actions">
-              <?php if ($p['status_pembayaran'] === 'menunggu_verifikasi'): ?>
-                <form method="post" action="pesanan_verifikasi.php" style="display:inline;">
-                  <input type="hidden" name="id" value="<?= $p['id'] ?>">
-                  <input type="hidden" name="aksi" value="lunas">
-                  <button type="submit" class="link-verify">Verifikasi</button>
-                </form>
-                <form method="post" action="pesanan_verifikasi.php" style="display:inline;" onsubmit="return confirm('Tolak bukti pembayaran ini?');">
-                  <input type="hidden" name="id" value="<?= $p['id'] ?>">
-                  <input type="hidden" name="aksi" value="ditolak">
-                  <button type="submit" class="link-remove">Tolak</button>
-                </form>
-              <?php elseif ($p['metode_pembayaran'] === 'cod' && $p['status_pembayaran'] !== 'lunas'): ?>
-                <form method="post" action="pesanan_verifikasi.php" style="display:inline;">
-                  <input type="hidden" name="id" value="<?= $p['id'] ?>">
-                  <input type="hidden" name="aksi" value="lunas">
-                  <button type="submit" class="link-verify">Tandai Lunas</button>
-                </form>
-              <?php else: ?>
-                <span class="empty-state" style="padding:0;">—</span>
-              <?php endif; ?>
+            <td>
+              <div class="admin-table__actions">
+                <a href="struk.php?id=<?= $p['id'] ?>" target="_blank">Cetak</a>
+                <?php if ($p['status_pembayaran'] === 'menunggu_verifikasi'): ?>
+                  <form method="post" action="pesanan_verifikasi.php" style="display:inline;">
+                    <input type="hidden" name="id" value="<?= $p['id'] ?>">
+                    <input type="hidden" name="aksi" value="lunas">
+                    <button type="submit" class="link-verify">Verifikasi</button>
+                  </form>
+                  <form method="post" action="pesanan_verifikasi.php" style="display:inline;" onsubmit="return confirm('Tolak bukti pembayaran ini?');">
+                    <input type="hidden" name="id" value="<?= $p['id'] ?>">
+                    <input type="hidden" name="aksi" value="ditolak">
+                    <button type="submit" class="link-remove">Tolak</button>
+                  </form>
+                <?php elseif ($p['metode_pembayaran'] === 'cod' && $p['status_pembayaran'] !== 'lunas'): ?>
+                  <form method="post" action="pesanan_verifikasi.php" style="display:inline;">
+                    <input type="hidden" name="id" value="<?= $p['id'] ?>">
+                    <input type="hidden" name="aksi" value="lunas">
+                    <button type="submit" class="link-verify">Tandai Lunas</button>
+                  </form>
+                <?php else: ?>
+                  <span class="empty-state" style="padding:0;">—</span>
+                <?php endif; ?>
+              </div>
             </td>
           </tr>
         <?php endforeach; ?>
